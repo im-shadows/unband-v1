@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unband WhatsApp</title>
+
+<style>
+*{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
+body{
+  margin:0;
+  background:#050b18;
+  color:#fff;
+}
+
+/* HEADER */
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:14px 18px;
+}
+#title-left{
+  font-size:18px;
+  font-weight:700;
+  color:#4da6ff;
+}
+#menu{
+  font-size:22px;
+  cursor:pointer;
+}
+
+/* MENU POPUP */
+#popup{
+  position:fixed;
+  top:60px;
+  right:16px;
+  background:#0b1633;
+  border-radius:10px;
+  padding:10px;
+  display:none;
+  z-index:9999;
+}
+#popup a{
+  display:block;
+  color:#4da6ff;
+  text-decoration:none;
+  margin:6px 0;
+}
+
+/* VIDEO */
+#video-wrap{
+  width:90%;
+  max-width:320px;
+  margin:10px auto;
+  background:#000;
+  padding:6px;
+  border-radius:12px;
+}
+video{
+  width:100%;
+  border-radius:10px;
+}
+
+/* VIDEO BUTTON */
+#video-btn{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin-bottom:12px;
+}
+#video-btn button{
+  padding:8px 14px;
+  border:none;
+  border-radius:8px;
+  background:#1a2d5c;
+  color:#fff;
+  cursor:pointer;
+}
+
+/* FORM BOX */
+.box{
+  width:90%;
+  max-width:360px;
+  margin:12px auto;
+  background:#0b1633;
+  padding:14px;
+  border-radius:14px;
+}
+.box h3{
+  margin:0 0 6px;
+  color:#4da6ff;
+  font-size:14px;
+}
+
+input,select{
+  width:100%;
+  padding:10px;
+  border-radius:8px;
+  border:none;
+  margin-bottom:8px;
+  background:#020818;
+  color:#fff;
+}
+
+#msg{
+  font-size:12px;
+  color:#ff7070;
+  min-height:16px;
+}
+
+#send{
+  width:100%;
+  padding:12px;
+  background:#1f5cff;
+  border:none;
+  border-radius:10px;
+  color:#fff;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+/* CREDIT */
+footer{
+  text-align:center;
+  font-size:12px;
+  opacity:.6;
+  margin:20px 0;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div id="title-left">>_ Unband WhatsApp</div>
+  <div id="menu">☰</div>
+</header>
+
+<div id="popup">
+  <a href="https://wa.me/6283128490718" target="_blank">WhatsApp</a>
+  <a href="https://t.me/cuxxyzhost" target="_blank">Telegram</a>
+</div>
+
+<!-- VIDEO -->
+<div id="video-wrap">
+  <video id="vid" preload="metadata" muted loop>
+    <source src="vid.mp4" type="video/mp4">
+  </video>
+</div>
+
+<div id="video-btn">
+  <button id="play">Play</button>
+  <button id="next">Ganti</button>
+</div>
+
+<!-- FORM -->
+<div class="box">
+  <h3>>_ No - WhatsApp</h3>
+  <input id="no" value="+62" />
+
+  <h3>>_ Opsi - Unband</h3>
+  <select id="opsi">
+    <option value="">-- pilih opsi --</option>
+    <option value="spam">Spam</option>
+    <option value="manen">Manen</option>
+    <option value="manen-hard">Manen Hard</option>
+  </select>
+
+  <select id="sub" style="display:none">
+    <option value="">-- sub opsi --</option>
+  </select>
+
+  <div id="msg"></div>
+
+  <button id="send">Send Banding</button>
+</div>
+
+<footer>
+  © 2026 Unband Tool • Premium | By CuxxyzHost ⚡
+</footer>
+
+<script>
+/* MENU */
+menu.onclick=()=>popup.style.display=
+popup.style.display=='block'?'none':'block'
+
+/* VIDEO */
+const vid=document.getElementById('vid')
+const play=document.getElementById('play')
+const next=document.getElementById('next')
+const vids=['vid.mp4','vid2.mp4','vid3.mp4']
+let vi=0
+
+window.onload=()=>vid.play().catch(()=>{})
+
+play.onclick=()=>{
+  if(vid.paused){
+    vid.muted=false
+    vid.play()
+    play.textContent='Pause'
+  }else{
+    vid.pause()
+    play.textContent='Play'
+  }
+}
+
+next.onclick=()=>{
+  vi=(vi+1)%vids.length
+  vid.src=vids[vi]
+  vid.play()
+  play.textContent='Pause'
+}
+
+/* OPSI */
+const opsi=document.getElementById('opsi')
+const sub=document.getElementById('sub')
+
+opsi.onchange=()=>{
+  sub.innerHTML='<option value="">-- sub opsi --</option>'
+  sub.style.display='none'
+  if(!opsi.value) return
+
+  fetch(`opsi-${opsi.value}.json`)
+  .then(r=>r.json())
+  .then(d=>{
+    d.forEach(x=>{
+      const o=document.createElement('option')
+      o.value=x.id
+      o.textContent=x.id
+      sub.appendChild(o)
+    })
+    sub.style.display='block'
+  })
+}
+
+/* SEND */
+send.onclick=()=>{
+  msg.textContent=''
+  if(!no.value || no.value=='+62') return msg.textContent='No nya lum di isi tuh 🤦‍♂️'
+  if(!opsi.value) return msg.textContent='opsi nya bujang pilih 😒'
+  if(!sub.value) return msg.textContent='😔sub opsi nya isi dong'
+
+  fetch(`opsi-${opsi.value}.json`)
+  .then(r=>r.json())
+  .then(d=>{
+    const f=d.find(x=>x.id==sub.value)
+    const body=encodeURIComponent(f.body.replace('{no}',no.value))
+    window.location=`mailto:${f.email}?subject=Unband WhatsApp&body=${body}`
+  })
+}
+</script>
+</body>
+</html>
