@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unband-WhatsApp</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+  body {
+    margin:0; padding:0; background:#000; font-family:'Share Tech Mono', monospace; color:#fff; overflow-x:hidden;
+  }
+  /* Judul kiri atas */
+  #title-left {
+    position: fixed; top:10px; left:10px; font-size:20px; color:#0ff;
+    animation: glitch 1.5s infinite;
+    z-index:1000;
+  }
+  @keyframes glitch {
+    0%, 19%, 21%, 23%, 100% { text-shadow: 2px 0 #f0f, -2px 0 #0ff; }
+    20%, 22% { text-shadow: -2px 0 #f0f, 2px 0 #0ff; }
+  }
+
+  /* Buton garis 3 kanan atas */
+  #menu-btn {
+    position: fixed; top:10px; right:10px; font-size:24px; cursor:pointer; z-index:1000;
+  }
+  #contact-admin { display:none; position:fixed; top:50px; right:10px; z-index:1000; background:#111; padding:10px; border-radius:8px; }
+  #contact-admin a { display:block; color:#0ff; margin:5px 0; text-decoration:none; }
+
+  /* Kotak video */
+  #video-container {
+    position:relative; width:80%; max-width:480px; margin:70px auto 20px auto;
+    border:2px solid transparent; padding:5px; border-radius:12px;
+  }
+  #video-container::before {
+    content:''; position:absolute; top:0; left:0; width:100%; height:100%;
+    border:2px solid transparent; border-radius:12px;
+    box-sizing:border-box;
+    animation: neon-border 4s linear infinite;
+  }
+  @keyframes neon-border {
+    0% { border-color:#f00; }
+    25% { border-color:#0f0; }
+    50% { border-color:#00f; }
+    75% { border-color:#ff0; }
+    100% { border-color:#f00; }
+  }
+
+  video { width:100%; border-radius:10px; display:block; }
+
+  /* Tombol bawah video */
+  .video-btn { margin:5px; padding:8px 12px; background:#111; border:none; color:#0ff; cursor:pointer; border-radius:8px; }
+
+  /* Kotak input & select */
+  .input-box, .select-box { width:90%; max-width:400px; margin:10px auto; display:block; padding:8px; border-radius:8px; border:2px solid #0ff; background:#111; color:#0ff; }
+
+  /* Sub opsi */
+  .sub-opsi { width:90%; max-width:400px; margin:5px auto; display:block; padding:8px; border-radius:8px; border:2px solid #ff0; background:#111; color:#ff0; display:none; }
+
+  /* Tombol Send */
+  #send-btn { margin:15px auto; display:block; padding:10px 20px; border-radius:10px; border:2px solid #0ff; background:#111; color:#0ff; cursor:pointer; animation: neon-btn 2s linear infinite; }
+  @keyframes neon-btn {
+    0% { box-shadow:0 0 5px #0ff, 0 0 10px #0ff; }
+    50% { box-shadow:0 0 15px #f0f, 0 0 20px #0ff; }
+    100% { box-shadow:0 0 5px #0ff, 0 0 10px #0ff; }
+  }
+
+  /* Credit */
+  #credit { text-align:center; margin:30px 0; font-size:12px; color:#555; }
+
+</style>
+</head>
+<body>
+
+<div id="title-left">&gt;_ Unband-WhatsApp</div>
+
+<div id="menu-btn">&#9776;</div>
+<div id="contact-admin">
+  <a href="https://wa.me/6283128490718" target="_blank">WhatsApp</a>
+  <a href="https://t.me/cuxxyzhost" target="_blank">Telegram</a>
+</div>
+
+<!-- Video -->
+<div id="video-container">
+  <video id="main-video" src="vid.mp4" autoplay muted playsinline></video>
+  <button class="video-btn" id="play-pause-btn">Pause</button>
+  <button class="video-btn" id="change-video-btn">Ganti Video</button>
+</div>
+
+<!-- Input nomor -->
+<div>&gt;_ No - WhatsApp</div>
+<input type="text" id="no-wa" class="input-box" placeholder="+62..." value="+62">
+
+<!-- Pilih opsi -->
+<div>&gt;_ Opsi - Unband</div>
+<select id="select-opsi" class="select-box">
+  <option value="">-- Pilih Opsi --</option>
+  <option value="spam">Opsi Spam</option>
+  <option value="manen">Opsi Manen</option>
+  <option value="manen-hard">Opsi Manen Hard</option>
+</select>
+
+<!-- Sub opsi -->
+<select id="select-subopsi" class="sub-opsi">
+</select>
+
+<!-- Tombol Send -->
+<button id="send-btn">Send - Banding</button>
+<div id="warning" style="color:red; text-align:center; margin-top:5px;"></div>
+
+<!-- Credit -->
+<div id="credit">© 2026 Unband-WA | By CuxxyzHost</div>
+
+<script>
+const menuBtn = document.getElementById('menu-btn');
+const contactAdmin = document.getElementById('contact-admin');
+menuBtn.addEventListener('click', ()=>{ contactAdmin.style.display = contactAdmin.style.display==='block'?'none':'block'; });
+
+// Video buttons
+const video = document.getElementById('main-video');
+const playBtn = document.getElementById('play-pause-btn');
+const changeBtn = document.getElementById('change-video-btn');
+let videoIndex=0;
+const videos = ["vid.mp4","vid2.mp4","vid3.mp4"];
+playBtn.addEventListener('click', ()=>{
+  if(video.paused){ video.play(); playBtn.textContent='Pause'; }
+  else{ video.pause(); playBtn.textContent='Play'; }
+});
+changeBtn.addEventListener('click', ()=>{
+  videoIndex = (videoIndex+1)%videos.length;
+  video.src = videos[videoIndex];
+  video.play();
+  playBtn.textContent='Pause';
+});
+
+// Opsi & sub opsi
+const opsiMap = {
+  "spam":"opsi-spam.json",
+  "manen":"opsi-manen.json",
+  "manen-hard":"opsi-manen-hard.json"
+};
+const selectOpsi = document.getElementById('select-opsi');
+const subOpsi = document.getElementById('select-subopsi');
+selectOpsi.addEventListener('change', ()=>{
+  const val = selectOpsi.value;
+  subOpsi.innerHTML = '';
+  if(!val){ subOpsi.style.display='none'; return; }
+  fetch(opsiMap[val]).then(r=>r.json()).then(data=>{
+    subOpsi.style.display='block';
+    data.forEach(d=>{
+      const opt = document.createElement('option');
+      opt.value = d.name;
+      opt.textContent = d.name;
+      subOpsi.appendChild(opt);
+    });
+  }).catch(e=>{ console.log(e); subOpsi.style.display='none'; });
+});
+
+// Send - Banding
+document.getElementById('send-btn').addEventListener('click', ()=>{
+  const no = document.getElementById('no-wa').value.trim();
+  const opsi = selectOpsi.value;
+  const sub = subOpsi.value;
+  const warning = document.getElementById('warning');
+
+  if(!no && !opsi && !sub){ warning.textContent="😤mau mulai gimana ini gk ad yg di isi"; return;}
+  if(!no){ warning.textContent="No nya lum di isi tuh 🤦‍♂️"; return;}
+  if(!opsi){ warning.textContent="opsi nya bujang pilih 😒"; return;}
+  if(!sub){ warning.textContent="😔sub opsi nya isi dong"; return;}
+  warning.textContent='';
+
+  // Ambil data json
+  fetch(opsiMap[opsi])
+    .then(r=>r.json())
+    .then(data=>{
+      const item = data.find(d=>d.name===sub);
+      if(!item) return;
+      const mailto = `mailto:${item.email}?subject=&body=${encodeURIComponent(item.body.replace('[ +62xxx ]',no))}`;
+      window.open(mailto,'_blank');
+    });
+});
+</script>
+
+</body>
+</html>
