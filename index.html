@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>System Boot</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;height:100vh;background:#000;display:flex;align-items:center;justify-content:center;
+  font-family:'Share Tech Mono',monospace;overflow:hidden;color:#0ff;
+}
+body::after{
+  content:'';position:fixed;inset:0;
+  background:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px);
+  background-size:100% 3px;pointer-events:none;
+}
+canvas{position:fixed;inset:0;z-index:0}
+.wrapper{position:relative;width:560px;height:230px;z-index:2}
+svg{position:absolute;inset:0}
+.panel{
+  position:absolute;inset:14px;border-radius:140px;
+  background:rgba(0,0,0,.78);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+}
+h1{
+  font-family:'Orbitron',sans-serif;font-size:22px;letter-spacing:2px;
+  background:linear-gradient(90deg,#00ffff,#ff00ff,#00ff99,#00ffff);
+  background-size:300%;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  animation:grad 4s linear infinite;position:relative;
+}
+@keyframes grad{to{background-position:300%}}
+.glitch::before,.glitch::after{
+  content:attr(data-text);position:absolute;inset:0
+}
+.glitch::before{color:#ff00ff;clip-path:inset(0 0 60% 0);animation:g1 .15s infinite}
+.glitch::after{color:#00ffff;clip-path:inset(60% 0 0 0);animation:g2 .15s infinite}
+@keyframes g1{50%{transform:translate(-2px,-1px)}}
+@keyframes g2{50%{transform:translate(2px,1px)}}
+.typing{font-size:14px;color:#cfcfcf;margin-top:12px;min-height:18px}
+.bar{width:70%;height:7px;background:#070707;border-radius:10px;margin-top:16px;overflow:hidden}
+.fill{height:100%;width:0%;background:linear-gradient(90deg,#00ffff,#ff00ff,#00ff99);box-shadow:0 0 15px #00ffff}
+.status{font-size:12px;color:#9a9a9a;margin-top:6px}
+</style>
+</head>
+
+<body>
+
+<canvas id="bg"></canvas>
+
+<div class="wrapper">
+
+<svg viewBox="0 0 560 230">
+  <defs>
+    <linearGradient id="edge" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#00ffff"/>
+      <stop offset="50%" stop-color="#ff00ff"/>
+      <stop offset="100%" stop-color="#00ff99"/>
+    </linearGradient>
+  </defs>
+  <rect x="10" y="10" width="540" height="210" rx="110" ry="110"
+    fill="none" stroke="url(#edge)" stroke-width="4"
+    stroke-dasharray="140 18">
+    <animate attributeName="stroke-dashoffset"
+      from="0" to="-316" dur="2.4s" repeatCount="indefinite"/>
+  </rect>
+</svg>
+
+<div class="panel">
+  <h1 id="title" data-text="INITIALIZING SYSTEM">INITIALIZING SYSTEM</h1>
+  <div id="typing" class="typing"></div>
+  <div class="bar"><div id="fill" class="fill"></div></div>
+  <div id="percent" class="status">0% • boot sequence</div>
+</div>
+
+</div>
+
+<script>
+/* particles */
+const c=document.getElementById('bg'),x=c.getContext('2d');
+let W,H,P=[];
+function rs(){W=c.width=innerWidth;H=c.height=innerHeight}
+addEventListener('resize',rs);rs();
+for(let i=0;i<60;i++)
+ P.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.2+.4,
+ vx:(Math.random()-.5)*.12,vy:(Math.random()-.5)*.12,o:Math.random()*.2+.05});
+(function a(){
+ x.clearRect(0,0,W,H);
+ P.forEach(p=>{
+  p.x+=p.vx;p.y+=p.vy;
+  if(p.x<0)p.x=W;if(p.x>W)p.x=0;
+  if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+  x.beginPath();x.fillStyle=`rgba(0,255,255,${p.o})`;
+  x.arc(p.x,p.y,p.r,0,Math.PI*2);x.fill();
+ });
+ requestAnimationFrame(a);
+})();
+
+/* typing */
+const texts=[
+ 'loading encrypted assets...',
+ 'syncing neural interface...',
+ 'routing data streams...',
+ 'calibrating system core...'
+];
+let ti=0,ci=0;
+(function type(){
+ let t=texts[ti];
+ typing.textContent=t.slice(0,ci++);
+ if(ci<=t.length) setTimeout(type,80);
+ else setTimeout(()=>{
+  typing.textContent='';ci=0;ti=(ti+1)%texts.length;
+  setTimeout(type,300);
+ },700);
+})();
+
+/* loading + redirect */
+let p=0;
+const load=setInterval(()=>{
+ if(p<100){
+  p++;fill.style.width=p+'%';
+  percent.textContent=p+'% • boot sequence';
+ }else{
+  clearInterval(load);
+  sessionStorage.setItem('fromLoading','1');
+  percent.textContent='ACCESS GATE READY';
+  setTimeout(()=>location.href='access.html',900);
+ }
+},70);
+
+/* glitch */
+setInterval(()=>{
+ title.classList.add('glitch');
+ setTimeout(()=>title.classList.remove('glitch'),260);
+},2000);
+</script>
+
+</body>
+</html>

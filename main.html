@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unband WhatsApp</title>
+<style>
+body {
+  margin:0;
+  padding:0;
+  background:#000;
+  color:#fff;
+  font-family:'Courier New', monospace;
+  overflow-x:hidden;
+}
+
+/* Judul kiri atas */
+#left-title {
+  position:fixed;
+  top:10px;
+  left:20px;
+  font-size:1.3em;
+  color:#00ffff;
+  animation: glitch 2s infinite;
+  z-index:100;
+}
+
+/* Judul tengah */
+#center-title {
+  text-align:center;
+  font-size:1.6em;
+  color:#ff00ff;
+  margin-top:20px;
+  animation: glitch 2s infinite;
+}
+
+/* Glitch text effect */
+@keyframes glitch {
+  0%,20%,40%,60%,80%,100% {opacity:1;}
+  10%,30%,50%,70%,90% {opacity:0.5; transform:translate(2px,-2px);}
+}
+
+/* Tombol garis 3 */
+#menu-btn {
+  position:fixed;
+  top:15px;
+  right:20px;
+  font-size:1.5em;
+  background:#111;
+  border:1px solid #0ff;
+  border-radius:5px;
+  padding:5px 10px;
+  color:#0ff;
+  cursor:pointer;
+  z-index:101;
+}
+
+#admin-contact {
+  position:absolute;
+  top:50px;
+  right:20px;
+  display:none;
+  background:#111;
+  padding:10px;
+  border:1px solid #0ff;
+  border-radius:5px;
+  z-index:102;
+}
+
+#admin-contact img {
+  width:30px;
+  margin:5px;
+  cursor:pointer;
+}
+
+/* Kotak video */
+#video-container {
+  position:relative;
+  width:60%;
+  max-width:600px;
+  margin:80px auto 20px;
+  padding:10px;
+  border:2px solid;
+  border-image: linear-gradient(90deg, #0ff, #f0f, #ff0, #0ff) 1;
+  border-radius:15px;
+}
+
+video {
+  width:100%;
+  border-radius:10px;
+}
+
+/* Tombol video */
+.video-btn {
+  margin:10px 5px 0;
+  padding:5px 10px;
+  border:1px solid #0ff;
+  border-radius:5px;
+  background:#111;
+  color:#0ff;
+  cursor:pointer;
+  font-family: monospace;
+}
+
+/* Kotak input & select */
+.input-box, .select-box {
+  display:block;
+  width:80%;
+  max-width:400px;
+  margin:10px auto;
+  padding:10px;
+  background:#111;
+  border:2px solid;
+  border-image: linear-gradient(90deg, #f0f, #0ff, #ff0, #f0f) 1;
+  border-radius:10px;
+  color:#0ff;
+  font-size:1em;
+}
+
+#sub-option {
+  display:none;
+}
+
+/* Tombol Send */
+#send-btn {
+  display:block;
+  margin:20px auto;
+  padding:10px 20px;
+  background:#111;
+  border:2px solid;
+  border-image: linear-gradient(90deg, #ff0, #0ff, #f0f) 1;
+  border-radius:10px;
+  color:#0ff;
+  cursor:pointer;
+  font-size:1em;
+}
+
+/* Pesan error */
+#message {
+  text-align:center;
+  margin-top:5px;
+  color:#ff5555;
+  min-height:20px;
+}
+
+/* Credit */
+#credit {
+  text-align:center;
+  margin-top:50px;
+  font-size:0.8em;
+  color:#555;
+}
+</style>
+</head>
+<body>
+
+<div id="left-title">>_ Unband-WhatsApp</div>
+<div id="center-title">Web Assist Unband</div>
+
+<button id="menu-btn">☰</button>
+<div id="admin-contact">
+  <a href="https://wa.me/6283128490718" target="_blank"><img src="https://img.icons8.com/color/48/000000/whatsapp.png"/></a>
+  <a href="https://t.me/cuxxyzhost" target="_blank"><img src="https://img.icons8.com/color/48/000000/telegram-app.png"/></a>
+</div>
+
+<div id="video-container">
+  <video id="main-video" src="vid.mp4" autoplay loop muted playsinline></video>
+  <button class="video-btn" id="toggle-video">Pause Video</button>
+  <button class="video-btn" id="change-video">Ganti Video</button>
+</div>
+
+<div style="text-align:center;">
+  <div>&gt;_ No - WhatsApp</div>
+  <input type="text" id="wa-number" class="input-box" value="+62" maxlength="15">
+
+  <div>&gt;_ Opsi - Unband</div>
+  <select id="main-option" class="select-box">
+    <option value="">Pilih opsi</option>
+    <option value="spam">Opsi - Spam</option>
+    <option value="manen">Opsi - Manen</option>
+    <option value="hard">Opsi - Manen Hard</option>
+  </select>
+
+  <select id="sub-option" class="select-box">
+    <option value="">Pilih sub-opsi</option>
+  </select>
+
+  <button id="send-btn">SEND BANDING</button>
+  <div id="message"></div>
+</div>
+
+<div id="credit">© 2026 Unband-WA | By CuxxyzHost 🌐</div>
+
+<script>
+  // Tombol menu
+  const menuBtn = document.getElementById('menu-btn');
+  const adminContact = document.getElementById('admin-contact');
+  menuBtn.addEventListener('click',()=> {
+    adminContact.style.display = adminContact.style.display==='block'?'none':'block';
+  });
+
+  // Video kontrol
+  const video = document.getElementById('main-video');
+  const toggleBtn = document.getElementById('toggle-video');
+  toggleBtn.addEventListener('click',()=>{
+    if(video.paused){video.play(); toggleBtn.textContent='Pause Video';}
+    else{video.pause(); toggleBtn.textContent='Play Video';}
+  });
+
+  const changeBtn = document.getElementById('change-video');
+  const videos=['vid.mp4','vid2.mp4','vid3.mp4'];
+  let idx=0;
+  changeBtn.addEventListener('click',()=>{
+    idx=(idx+1)%videos.length;
+    video.src=videos[idx];
+    video.play();
+  });
+
+  // Pilihan opsi & sub opsi
+  const mainOption = document.getElementById('main-option');
+  const subOption = document.getElementById('sub-option');
+
+  mainOption.addEventListener('change',()=>{
+    const val = mainOption.value;
+    subOption.innerHTML = '<option value="">Pilih sub-opsi</option>';
+    if(!val){subOption.style.display='none'; return;}
+    fetch(`opsi-${val}.json`).then(res=>res.json()).then(data=>{
+      data.forEach(o=>{
+        const opt = document.createElement('option');
+        opt.value=o.name;
+        opt.textContent=o.name;
+        subOption.appendChild(opt);
+      });
+      subOption.style.display='block';
+    });
+  });
+
+  // Send BANDING
+  const sendBtn = document.getElementById('send-btn');
+  const waInput = document.getElementById('wa-number');
+  const messageDiv = document.getElementById('message');
+
+  sendBtn.addEventListener('click',()=>{
+    const wa=waInput.value.trim();
+    const optionVal = mainOption.value;
+    const subVal = subOption.value;
+
+    if(!wa && !optionVal && !subVal){messageDiv.textContent="😤mau mulai gimana ini gk ad yg di isi"; return;}
+    if(!wa){messageDiv.textContent="No nya lum di isi tuh 🤦‍♂️"; return;}
+    if(!optionVal){messageDiv.textContent="opsi nya bujang pilih 😒"; return;}
+    if(!subVal){messageDiv.textContent="😔sub opsi nya isi dong"; return;}
+
+    fetch(`opsi-${optionVal}.json`).then(res=>res.json()).then(data=>{
+      const item=data.find(d=>d.name===subVal);
+      if(!item){messageDiv.textContent="Sub opsi tidak ditemukan"; return;}
+      const email=item.email;
+      let body=item.body.replace('[ +62xxx ]',wa);
+      const mailto = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(email)}&su=Banding&body=${encodeURIComponent(body)}`;
+      window.open(mailto,'_blank');
+    });
+  });
+</script>
+
+</body>
+</html>

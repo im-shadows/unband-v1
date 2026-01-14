@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Access Gate</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=JetBrains+Mono&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  height:100vh;
+  overflow:hidden;
+  font-family:'JetBrains Mono',monospace;
+  background:
+    radial-gradient(circle at 20% 30%, #260033, transparent 45%),
+    radial-gradient(circle at 80% 70%, #003344, transparent 50%),
+    linear-gradient(120deg,#01000a,#000014,#01000a);
+  color:#fff;
+}
+
+/* ===== CENTER ===== */
+.center{
+  position:relative;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* ===== PANEL ===== */
+.panel-wrap{
+  position:relative;
+  width:560px;
+}
+
+.panel{
+  position:relative;
+  padding:48px 42px;
+  border-radius:26px;
+  background:rgba(8,8,18,.96);
+  box-shadow:
+    0 40px 90px rgba(0,0,0,.85),
+    inset 0 0 45px rgba(255,0,80,.18);
+}
+
+/* STATIC BORDER */
+.border{
+  position:absolute;
+  inset:-2px;
+  border-radius:28px;
+  border:2px solid rgba(255,0,80,.25);
+}
+
+/* MOVING LINE (ONLY LINE MOVES) */
+.scan{
+  position:absolute;
+  width:140px;
+  height:2px;
+  background:linear-gradient(90deg,transparent,#ff0055,transparent);
+  filter:drop-shadow(0 0 6px #ff0055);
+  animation:scanPath 6s linear infinite;
+}
+
+@keyframes scanPath{
+  0%   {top:-2px; left:20px}
+  25%  {top:-2px; left:calc(100% - 160px)}
+  50%  {top:calc(100% - 2px); left:calc(100% - 160px)}
+  75%  {top:calc(100% - 2px); left:20px}
+  100% {top:-2px; left:20px}
+}
+
+/* ===== TITLE ===== */
+h1{
+  font-family:'Orbitron',sans-serif;
+  font-size:30px;
+  margin:0 0 16px;
+  letter-spacing:3px;
+  background:linear-gradient(90deg,#ff0055,#ff88aa,#ff0055);
+  background-size:300%;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation:titleFlow 4s linear infinite;
+}
+
+@keyframes titleFlow{
+  to{background-position:300%}
+}
+
+/* GLITCH EFFECT */
+.glitch{
+  animation:glitch .15s steps(2) infinite;
+}
+@keyframes glitch{
+  0%{transform:none}
+  50%{transform:skew(-6deg) translateX(-2px)}
+  100%{transform:none}
+}
+
+/* ===== TEXT ===== */
+.typing{
+  font-size:14px;
+  color:#d0d0d0;
+  min-height:18px;
+}
+
+/* ===== BUTTON ===== */
+.btn-box{
+  margin:28px auto 0;
+  width:260px;
+  height:52px;
+  position:relative;
+}
+
+.btn-border{
+  position:absolute;
+  inset:-2px;
+  border-radius:28px;
+  border:2px solid rgba(0,255,255,.4);
+}
+
+.btn-scan{
+  position:absolute;
+  width:90px;
+  height:2px;
+  background:linear-gradient(90deg,transparent,#00ffff,transparent);
+  filter:drop-shadow(0 0 6px #00ffff);
+  animation:btnScan 3s linear infinite;
+}
+
+@keyframes btnScan{
+  0%{top:-2px;left:10px}
+  50%{top:-2px;left:calc(100% - 100px)}
+  100%{top:-2px;left:10px}
+}
+
+button{
+  position:relative;
+  width:100%;
+  height:100%;
+  border:none;
+  border-radius:26px;
+  background:#060612;
+  color:#00ffff;
+  font-family:'Orbitron',sans-serif;
+  letter-spacing:1.5px;
+  cursor:pointer;
+  box-shadow:0 0 25px rgba(0,255,255,.6);
+}
+
+/* ===== PROGRESS ===== */
+.bar{
+  margin:26px auto 6px;
+  width:85%;
+  height:8px;
+  background:#111;
+  border-radius:10px;
+  overflow:hidden;
+}
+.fill{
+  width:0%;
+  height:100%;
+  background:linear-gradient(90deg,#ff0055,#ff88aa);
+  box-shadow:0 0 15px #ff0055;
+}
+.status{
+  font-size:12px;
+  color:#aaa;
+}
+.spin{
+  display:inline-block;
+  animation:spin 1.2s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+
+<body>
+
+<div class="center">
+  <div class="panel-wrap">
+
+    <div class="border"></div>
+    <div class="scan"></div>
+
+    <div class="panel">
+      <h1 id="title">ACCESS TERKUNCI</h1>
+      <div id="typing" class="typing"></div>
+
+      <div class="btn-box">
+        <div class="btn-border"></div>
+        <div class="btn-scan"></div>
+        <button onclick="unlock()">FOLLOW SALURAN WA</button>
+      </div>
+
+      <div class="bar"><div id="fill" class="fill"></div></div>
+      <div id="status" class="status">0% <span class="spin">✦</span></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* TYPING */
+const txt='untuk membuka access, wajib selesaikan 1 langkah berikut';
+let i=0;
+(function type(){
+ typing.textContent=txt.slice(0,i++);
+ if(i<=txt.length)setTimeout(type,70);
+})();
+
+/* GLITCH RANDOM */
+setInterval(()=>{
+ title.classList.add('glitch');
+ setTimeout(()=>title.classList.remove('glitch'),180);
+},2500);
+
+/* UNLOCK + REDIRECT */
+let p=0;
+function unlock(){
+ window.open('https://whatsapp.com/channel/0029VbBroNiCMY09CSdh8Q0n','_blank');
+ const t=setInterval(()=>{
+  if(p<100){
+   p+=5;
+   fill.style.width=p+'%';
+   status.innerHTML=p+'% <span class="spin">✦</span>';
+  }else{
+   clearInterval(t);
+   status.textContent='ACCESS TERBUKA ✔';
+   setTimeout(()=>{
+     window.location.href='main.html';
+   },900);
+  }
+ },150);
+}
+</script>
+
+</body>
+</html>
