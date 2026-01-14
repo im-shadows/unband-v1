@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unband WhatsApp</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:#000;
+  color:#0ff;
+  font-family:'Share Tech Mono',monospace;
+}
+
+/* ================= HEADER ================= */
+#title-left{
+  position:fixed;
+  top:10px;
+  left:12px;
+  font-family:'Orbitron',sans-serif;
+  font-size:18px;
+  z-index:1000;
+  animation:glitch 2s infinite;
+}
+
+@keyframes glitch{
+  0%{text-shadow:2px 0 #0ff}
+  50%{text-shadow:-2px 0 #f0f}
+  100%{text-shadow:2px 0 #0ff}
+}
+
+#menu-btn{
+  position:fixed;
+  top:10px;
+  right:12px;
+  font-size:26px;
+  cursor:pointer;
+  z-index:1000;
+}
+
+#contact-admin{
+  position:fixed;
+  top:45px;
+  right:12px;
+  background:#111;
+  border:1px solid #0ff;
+  border-radius:8px;
+  padding:10px;
+  display:none;
+  z-index:1001;
+}
+#contact-admin a{
+  display:block;
+  color:#0ff;
+  text-decoration:none;
+  margin:6px 0;
+}
+
+/* ================= VIDEO ================= */
+#video-box{
+  width:92%;
+  max-width:380px;
+  margin:70px auto 20px;
+  position:relative;
+  padding:6px;
+  border-radius:14px;
+}
+
+#video-box::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:14px;
+  border:2px solid transparent;
+  animation:borderRun 4s linear infinite;
+  pointer-events:none; /* 🔥 PENTING */
+}
+
+@keyframes borderRun{
+  0%{border-color:red}
+  25%{border-color:yellow}
+  50%{border-color:cyan}
+  75%{border-color:magenta}
+  100%{border-color:red}
+}
+
+video{
+  width:100%;
+  border-radius:10px;
+  display:block;
+}
+
+/* video buttons */
+.video-controls{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin-top:8px;
+}
+.video-controls button{
+  padding:6px 14px;
+  background:#111;
+  border:1px solid #0ff;
+  color:#0ff;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+/* ================= FORM ================= */
+.form-box{
+  width:92%;
+  max-width:420px;
+  margin:20px auto;
+  padding:14px;
+  background:#111;
+  border-radius:14px;
+  border:1px solid #0ff;
+}
+
+.label{
+  margin:10px 0 6px;
+  font-family:'Orbitron',sans-serif;
+}
+
+input,select{
+  width:100%;
+  padding:10px;
+  background:#000;
+  border:1px solid #0ff;
+  border-radius:8px;
+  color:#0ff;
+  font-family:'Share Tech Mono';
+}
+
+/* 🔥 FIX NOMOR TIDAK KELUAR FRAME */
+input{
+  max-width:100%;
+}
+
+/* sub opsi */
+#sub-opsi{
+  display:none;
+  margin-top:10px;
+}
+
+/* send */
+#send{
+  width:100%;
+  margin-top:16px;
+  padding:12px;
+  background:#000;
+  border:1px solid #0ff;
+  color:#0ff;
+  border-radius:10px;
+  cursor:pointer;
+  animation:sendGlow 2s infinite;
+}
+
+@keyframes sendGlow{
+  0%{box-shadow:0 0 5px #0ff}
+  50%{box-shadow:0 0 15px #f0f}
+  100%{box-shadow:0 0 5px #0ff}
+}
+
+#msg{
+  margin-top:10px;
+  color:#f66;
+  text-align:center;
+}
+
+/* ================= FOOTER ================= */
+#credit{
+  text-align:center;
+  font-size:12px;
+  color:#555;
+  margin:20px 0;
+}
+</style>
+</head>
+
+<body>
+
+<div id="title-left">&gt;_ Unband-WhatsApp</div>
+<div id="menu-btn">☰</div>
+
+<div id="contact-admin">
+  <a href="https://wa.me/6283128490718" target="_blank">WhatsApp</a>
+  <a href="https://t.me/cuxxyzhost" target="_blank">Telegram</a>
+</div>
+
+<!-- VIDEO -->
+<div id="video-box">
+  <video id="vid" src="vid.mp4" autoplay playsinline></video>
+  <div class="video-controls">
+    <button id="play">Pause</button>
+    <button id="next">Ganti Video</button>
+  </div>
+</div>
+
+<!-- FORM -->
+<div class="form-box">
+
+  <div class="label">&gt;_ No - WhatsApp</div>
+  <input id="no" value="+62">
+
+  <div class="label">&gt;_ Opsi - Unband</div>
+  <select id="opsi">
+    <option value="">-- pilih --</option>
+    <option value="spam">Spam</option>
+    <option value="manen">Manen</option>
+    <option value="manen-hard">Manen Hard</option>
+  </select>
+
+  <select id="sub-opsi"></select>
+
+  <button id="send">Send Banding</button>
+  <div id="msg"></div>
+</div>
+
+<div id="credit">© Unband WhatsApp • By CuxxyzHost</div>
+
+<script>
+/* ===== MENU ===== */
+menu-btn.onclick=()=>{
+  contact-admin.style.display =
+  contact-admin.style.display==='block'?'none':'block'
+}
+
+/* ===== VIDEO ===== */
+const vid=document.getElementById('vid')
+const vids=['vid.mp4','vid2.mp4','vid3.mp4']
+let i=0
+
+play.onclick=()=>{
+  if(vid.paused){vid.play();play.textContent='Pause'}
+  else{vid.pause();play.textContent='Play'}
+}
+
+next.onclick=()=>{
+  i=(i+1)%vids.length
+  vid.src=vids[i]
+  vid.play()
+  play.textContent='Pause'
+}
+
+/* ===== OPSI ===== */
+const map={
+  'spam':'opsi-spam.json',
+  'manen':'opsi-manen.json',
+  'manen-hard':'opsi-manen-hard.json'
+}
+
+opsi.onchange=()=>{
+  sub-opsi.style.display='none'
+  sub-opsi.innerHTML=''
+  if(!opsi.value) return
+
+  fetch(map[opsi.value])
+  .then(r=>r.json())
+  .then(d=>{
+    sub-opsi.style.display='block'
+    d.forEach(x=>{
+      const o=document.createElement('option')
+      o.value=x.name
+      o.textContent=x.name
+      sub-opsi.appendChild(o)
+    })
+  })
+}
+
+/* ===== SEND ===== */
+send.onclick=()=>{
+  if(!no.value && !opsi.value && !sub-opsi.value)
+    return msg.textContent="😤 mau mulai gimana ini gk ad yg di isi"
+  if(!no.value) return msg.textContent="No nya lum di isi tuh 🤦‍♂️"
+  if(!opsi.value) return msg.textContent="opsi nya bujang pilih 😒"
+  if(!sub-opsi.value) return msg.textContent="😔 sub opsi nya isi dong"
+
+  fetch(map[opsi.value])
+  .then(r=>r.json())
+  .then(d=>{
+    const x=d.find(v=>v.name===sub-opsi.value)
+    window.open(
+      `mailto:${x.email}?subject=&body=${encodeURIComponent(
+        x.body.replace('[ +62xxx ]',no.value)
+      )}`
+    )
+  })
+}
+</script>
+
+</body>
+</html>
